@@ -67,13 +67,21 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now kanata.service
 echo "  kanata.service -> enabled"
 
-# Install mode scripts to PATH
+# Install scripts to PATH
 mkdir -p ~/.local/bin
-for script in "$DOTFILES"/bin/omarchy-mode-*; do
+for script in "$DOTFILES"/bin/omarchy-*; do
   [ -f "$script" ] || continue
   ln -sf "$script" ~/.local/bin/"$(basename "$script")"
   echo "  $(basename "$script") -> linked"
 done
 
-echo "Done! Restart waybar: omarchy-restart-waybar"
-echo "Hyprland will auto-reload."
+# Install verdant theme
+if [ -d "$DOTFILES/themes/verdant" ]; then
+  mkdir -p ~/.config/omarchy/themes
+  ln -sf "$DOTFILES/themes/verdant" ~/.config/omarchy/themes/verdant
+  echo "  verdant theme -> linked"
+  omarchy-theme-set verdant
+  echo "  verdant theme -> applied"
+fi
+
+echo "Done! Hyprland will auto-reload."
