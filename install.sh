@@ -84,4 +84,11 @@ if [ -d "$DOTFILES/themes/verdant" ]; then
   echo "  verdant theme -> applied"
 fi
 
+# Custom screensaver branding
+if [ -f "$DOTFILES/branding/screensaver.txt" ]; then
+  mkdir -p ~/.config/omarchy/branding
+  ln -sf "$DOTFILES/branding/screensaver.txt" ~/.config/omarchy/branding/screensaver.txt
+  echo "  branding/screensaver.txt -> linked"
+fi
+
 echo "Done! Hyprland will auto-reload."
