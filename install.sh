@@ -39,7 +39,7 @@ echo "  .zshrc -> linked"
 # Set zsh as default shell
 if [ "$SHELL" != "$(which zsh)" ]; then
   echo "Setting zsh as default shell..."
-  chsh -s "$(which zsh)"
+  sudo chsh -s "$(which zsh)" "$USER"
 fi
 
 # Set kitty as default terminal
