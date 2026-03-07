@@ -1,0 +1,16 @@
+{
+  "bookmark_bar": {
+    "show_on_all_tabs": false
+  },
+  "browser": {
+    "show_home_button": false
+  },
+  "extensions": {
+    "ui": {
+      "developer_mode": false
+    }
+  },
+  "profile": {
+    "name": "Coding"
+  }
+}

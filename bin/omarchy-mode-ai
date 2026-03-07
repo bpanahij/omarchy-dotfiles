@@ -1,0 +1,22 @@
+#!/bin/bash
+# AI mode: slack ws1, chromium ws2, claude terminal ws3
+
+# Restore waybar if not running
+pgrep -x waybar >/dev/null || uwsm-app -- waybar >/dev/null 2>&1 &
+
+# Close all windows
+omarchy-hyprland-window-close-all
+sleep 0.5
+
+# Slack on workspace 1
+hyprctl dispatch exec "[workspace 1 silent]" "uwsm app -- slack"
+
+# Chromium on workspace 2
+hyprctl dispatch exec "[workspace 2 silent]" "chromium"
+
+# Terminal with claude on workspace 3
+hyprctl dispatch exec "[workspace 3 silent]" "xdg-terminal-exec -e claude --dangerously-skip-permissions"
+
+# Switch to workspace 3
+sleep 0.3
+hyprctl dispatch workspace 3

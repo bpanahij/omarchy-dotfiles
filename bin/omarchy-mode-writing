@@ -1,0 +1,19 @@
+#!/bin/bash
+# Writing mode: fullscreen neovim, no waybar
+
+# Close all windows
+omarchy-hyprland-window-close-all
+sleep 0.5
+
+# Hide waybar
+pkill -x waybar 2>/dev/null
+
+# Launch kitty with neovim on workspace 1
+hyprctl dispatch exec "[workspace 1 silent]" "kitty -e nvim"
+
+sleep 0.3
+
+# Fullscreen the window
+hyprctl dispatch workspace 1
+sleep 0.2
+hyprctl dispatch fullscreen 0

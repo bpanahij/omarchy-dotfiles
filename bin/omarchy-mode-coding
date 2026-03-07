@@ -1,0 +1,34 @@
+#!/bin/bash
+# Coding mode: terminals on ws1-3 (~/repos), chromium on ws4
+
+# Restore waybar if not running
+pgrep -x waybar >/dev/null || uwsm-app -- waybar >/dev/null 2>&1 &
+
+# Get the address of the window running this script (if any) so we can skip it
+SELF_ADDR=$(hyprctl activewindow -j 2>/dev/null | jq -r '.address // empty')
+
+# Close all windows except self
+hyprctl clients -j | jq -r ".[].address" | while read addr; do
+  [ "$addr" = "$SELF_ADDR" ] && continue
+  hyprctl dispatch closewindow "address:$addr"
+done
+
+sleep 0.5
+
+# Launch terminals on workspaces 1-3
+for ws in 1 2 3; do
+  hyprctl dispatch exec "[workspace $ws silent]" "kitty --directory $HOME/repos"
+done
+
+# Launch chromium (clean profile, fullscreen) on workspace 4
+hyprctl dispatch exec "[workspace 4 silent]" "chromium --user-data-dir=$HOME/.config/chromium-coding --start-fullscreen"
+
+sleep 0.3
+
+# Now close self if we skipped it
+if [ -n "$SELF_ADDR" ]; then
+  hyprctl dispatch closewindow "address:$SELF_ADDR"
+fi
+
+# Switch to workspace 1
+hyprctl dispatch workspace 1
