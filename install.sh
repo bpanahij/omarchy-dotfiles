@@ -9,7 +9,38 @@ echo "Installing dotfiles from $DOTFILES"
 
 # Install packages
 echo "Installing packages..."
-yay -S --needed --noconfirm kitty slack-desktop kanata-bin
+yay -S --needed --noconfirm kitty slack-desktop kanata-bin zsh
+
+# Install oh-my-zsh + plugins + powerlevel10k
+if [ ! -d ~/.oh-my-zsh ]; then
+  echo "Installing oh-my-zsh..."
+  RUNZSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
+
+ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+
+if [ ! -d "$ZSH_CUSTOM/themes/powerlevel10k" ]; then
+  echo "Installing powerlevel10k..."
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$ZSH_CUSTOM/themes/powerlevel10k"
+fi
+
+if [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
+  git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+fi
+
+if [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+fi
+
+# Symlink .zshrc
+ln -sf "$DOTFILES/zsh/.zshrc" ~/.zshrc
+echo "  .zshrc -> linked"
+
+# Set zsh as default shell
+if [ "$SHELL" != "$(which zsh)" ]; then
+  echo "Setting zsh as default shell..."
+  chsh -s "$(which zsh)"
+fi
 
 # Set kitty as default terminal
 echo "Setting kitty as default terminal..."
