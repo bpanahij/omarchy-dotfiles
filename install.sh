@@ -35,6 +35,8 @@ fi
 # Symlink .zshrc
 ln -sf "$DOTFILES/zsh/.zshrc" ~/.zshrc
 echo "  .zshrc -> linked"
+ln -sf "$DOTFILES/zsh/.p10k.zsh" ~/.p10k.zsh
+echo "  .p10k.zsh -> linked"
 
 # Set zsh as default shell
 if [ "$SHELL" != "$(which zsh)" ]; then
